@@ -86,6 +86,85 @@
             100% { transform: rotate(360deg); } 
         }
 
+        /* Apple System Alert Pop-up Style */
+        #popup-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        #popup-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .apple-alert {
+            background: rgba(30, 30, 30, 0.75);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            width: 270px; /* Standard iOS System Alert Width */
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transform: scale(1.15);
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow: hidden;
+        }
+
+        #popup-overlay.show .apple-alert {
+            transform: scale(1);
+        }
+
+        .alert-content {
+            padding: 20px 16px;
+        }
+
+        .alert-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 0 0 6px 0;
+            letter-spacing: -0.4px;
+        }
+
+        .alert-message {
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 16px;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: -0.1px;
+        }
+
+        .alert-button {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-top: 0.5px solid rgba(255, 255, 255, 0.15);
+            color: #0A84FF; /* Apple System Blue */
+            padding: 12px 0;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: -0.4px;
+            outline: none;
+            transition: background 0.2s;
+        }
+
+        .alert-button:active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
         /* Main UI Card */
         .card {
             background: var(--glass-bg); 
@@ -223,6 +302,17 @@
         <div class="spinner"></div>
     </div>
 
+    <!-- Apple UI Pop-Up Overlay -->
+    <div id="popup-overlay">
+        <div class="apple-alert">
+            <div class="alert-content">
+                <h2 class="alert-title">Showcase Notice</h2>
+                <p class="alert-message">This website serves strictly as a project showcase for the Automation game. It is not an official commercial platform.</p>
+            </div>
+            <button class="alert-button" onclick="closeNotice()">Sige</button>
+        </div>
+    </div>
+
     <div id="bg-container">
         <div class="bg-slide active" style="background-image: url('img/2.png');"></div>
         <div class="bg-slide" style="background-image: url('img/3.png');"></div>
@@ -272,6 +362,21 @@
             setTimeout(() => {
                 window.location.href = url;
             }, 1000);
+        }
+
+        // Showcase Pop-up Session Logic
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!sessionStorage.getItem('showcaseNoticeDismissed')) {
+                // Subtle delay for transition elegance
+                setTimeout(() => {
+                    document.getElementById('popup-overlay').classList.add('show');
+                }, 400);
+            }
+        });
+
+        function closeNotice() {
+            document.getElementById('popup-overlay').classList.remove('show');
+            sessionStorage.setItem('showcaseNoticeDismissed', 'true');
         }
     </script>
 </body>
