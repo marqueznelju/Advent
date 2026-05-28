@@ -119,7 +119,7 @@
         }
 
         .variant-btn {
-            background: rgba(255, 255, 255, 0.05); 
+            background: rgba(68, 68, 68, 0.219); 
             padding: 20px; 
             border-radius: 24px;
             cursor: pointer; 
@@ -174,6 +174,7 @@
 
         /* Footer Notification */
         .footer-notice {
+            text-decoration: none;
             margin-bottom: 30px;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -239,7 +240,7 @@
 
     <div class="card">
         <h1>Leopard Motors</h1>
-        <p>Choose your vehicle</p>
+        <p>Choose your vehicle:</p>
         <div class="btn-container">
             <div class="variant-btn" onclick="navigateWithLoader('GTS/index.html')">
                 <img src="img/gts.png" alt="GTS">
@@ -251,15 +252,18 @@
                 <span class="variant-title">Ecobeast</span>
             </div>
         </div>
-
-        <button class="action-btn" onclick="navigateWithLoader('https://docs.google.com/forms/d/e/1FAIpQLSft4gtBUl8l10hM1h9PtrTVIA1t-3PjyGEAuU3cN5UBlWb4DQ/viewform?usp=header')">
+<!--        <button class="action-btn" onclick="navigateWithLoader('https://docs.google.com/forms/d/e/1FAIpQLSft4gtBUl8l10hM1h9PtrTVIA1t-3PjyGEAuU3cN5UBlWb4DQ/viewform?usp=header')">
             Register Interest
-        </button>
+        </button> -->
     </div>
 
-    <div class="footer-notice">
-        
-    </div>
+    <a  class="footer-notice" href="https://store.steampowered.com/app/293760/Automation__The_Car_Company_Tycoon_Game/">
+        Automation: The Car Company Tycoon Game
+    </a>
+    <a class="footer-notice" href="https://docs.google.com/forms/d/e/1FAIpQLSft4gtBUl8l10hM1h9PtrTVIA1t-3PjyGEAuU3cN5UBlWb4DQ/viewform?usp=header">
+        Register Interest
+    </a>
+    
 
     <script>
         // Background Slider Logic (Configured precisely for 1-second loops)
