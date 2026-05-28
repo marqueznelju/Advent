@@ -16,7 +16,7 @@
             padding: 0; 
             min-height: 100vh;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
-            background: #38383800; 
+            background: #12121200; /* Darker fallback background */
             color: white;
             -webkit-font-smoothing: antialiased;
             display: flex;
@@ -32,6 +32,7 @@
             top: 0; left: 0; 
             width: 100%; height: 100%; 
             z-index: -2; 
+            background: black; /* Pure black backing layer */
         }
         
         .bg-slide { 
@@ -39,7 +40,8 @@
             width: 100%; height: 100%; 
             background-size: cover; 
             background-position: center; 
-            filter: blur(50px); /* Heavy 100% visual blur environment */
+            /* Added brightness control here to make background images darker */
+            filter: blur(50px) brightness(40%); 
             opacity: 0; 
             transition: var(--bg-transition); 
             transform: scale(1.15); /* Prevents blurred edges from bleeding on any screen size */
@@ -93,7 +95,7 @@
             border-radius: 32px; 
             border: var(--glass-border);
             text-align: center; 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5); /* Slightly deeper shadow for contrast */
             width: 90%;
             max-width: 540px;
             margin: 40px auto;
@@ -139,9 +141,12 @@
             transform: scale(1.04); 
         }
 
+        /* Optimizations for high-res 720p image scaling */
         .variant-btn img { 
             width: 100%; 
             height: auto; 
+            max-height: 120px; /* Limits high-res vertical stretching */
+            object-fit: cover;  /* Keeps the aspect ratio crisp */
             border-radius: 12px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
@@ -153,29 +158,10 @@
             color: #fff;
         }
 
-        /* Form Button */
-        .action-btn {
-            color: #000;
-            border: none;
-            padding: 16px 40px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.3s ease, background 0.3s;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.03);
-            background: #e0e0e0;
-        }
-
         /* Footer Notification */
         .footer-notice {
             text-decoration: none;
-            margin-bottom: 30px;
+            margin-bottom: 15px; /* Tighter margin for stacked notices */
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -190,12 +176,17 @@
             text-align: center;
             z-index: 1;
             max-width: 90%;
+            transition: background 0.3s;
+        }
+
+        .footer-notice:hover {
+            background: rgba(255, 255, 255, 0.15);
         }
 
         /* Mobile Responsive Breakpoint */
         @media (max-width: 500px) {
             body, html {
-                overflow-y: auto; /* Fallback for exceptionally small layout heights */
+                overflow-y: auto; 
             }
             .card {
                 padding: 30px 20px;
@@ -205,19 +196,20 @@
                 margin-bottom: 25px;
             }
             .btn-container {
-                flex-direction: column; /* Stack buttons vertically on mobile */
+                flex-direction: column; 
                 align-items: center;
                 gap: 15px;
             }
             .variant-btn {
                 width: 100%;
                 max-width: 280px;
-                flex-direction: row; /* Horizontal layout for variant elements on mobile */
+                flex-direction: row; 
                 padding: 15px;
                 gap: 20px;
             }
             .variant-btn img {
                 width: 80px;
+                max-height: 80px;
             }
             .variant-title {
                 font-size: 1.2rem;
@@ -252,12 +244,9 @@
                 <span class="variant-title">Ecobeast</span>
             </div>
         </div>
-<!--        <button class="action-btn" onclick="navigateWithLoader('https://docs.google.com/forms/d/e/1FAIpQLSft4gtBUl8l10hM1h9PtrTVIA1t-3PjyGEAuU3cN5UBlWb4DQ/viewform?usp=header')">
-            Register Interest
-        </button> -->
     </div>
 
-    <a  class="footer-notice" href="https://store.steampowered.com/app/293760/Automation__The_Car_Company_Tycoon_Game/">
+    <a class="footer-notice" href="https://store.steampowered.com/app/293760/Automation__The_Car_Company_Tycoon_Game/">
         Automation: The Car Company Tycoon Game
     </a>
     <a class="footer-notice" href="https://docs.google.com/forms/d/e/1FAIpQLSft4gtBUl8l10hM1h9PtrTVIA1t-3PjyGEAuU3cN5UBlWb4DQ/viewform?usp=header">
@@ -266,21 +255,20 @@
     
 
     <script>
-        // Background Slider Logic (Configured precisely for 1-second loops)
+        // Background Slider Logic
         const slides = document.querySelectorAll('.bg-slide');
         let current = 0;
         setInterval(() => {
             slides[current].classList.remove('active');
             current = (current + 1) % slides.length;
             slides[current].classList.add('active');
-        }, 2000); // Trigger transition changes at 2s intervals
+        }, 2000); 
 
         // Apple UI Style Navigation Loader
         function navigateWithLoader(url) {
             const loader = document.getElementById('loader-overlay');
             loader.classList.add('active');
             
-            // Wait 1 second (1000ms), then redirect
             setTimeout(() => {
                 window.location.href = url;
             }, 1000);
