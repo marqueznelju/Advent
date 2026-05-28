@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advent GTS 6MT | Turbocharged Performance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Apple-esque typography and smooth rendering */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000000;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555555;
+        }
+
+        /* Animation classes for Intersection Observer */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Subtle ambient glow behind the main car */
+        .ambient-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden">
+
+    <!-- Floating Navigation Bar -->
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-3xl z-50 bg-white/5 border border-white/10 backdrop-blur-2xl rounded-full px-6 py-3 flex justify-between items-center shadow-2xl transition-all duration-300">
+        <div class="font-bold tracking-tight text-xl text-white">ADVENT <span class="text-orange-500">GTS</span></div>
+        <div class="flex gap-4 items-center">
+            <a href="..\Ecobeast\index.html" class="bg-white/10 hover:bg-white/20 border border-white/10 backdrop-blur-md text-white text-sm font-medium px-5 py-2 rounded-full transition-all duration-300">
+                Compare
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-16 px-6">
+        <div class="ambient-glow"></div>
+        
+        <div class="text-center z-10 reveal">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4 text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500">
+                Advent GTS
+            </h1>
+            <p class="text-xl md:text-3xl text-gray-400 mb-10 font-light tracking-tight max-w-2xl mx-auto">
+                6MT with Turbocharger. <br class="hidden md:block"/> Pure driving exhilaration.
+            </p>
+        </div>
+
+        <div class="w-full max-w-6xl mt-8 reveal group perspective">
+            <div class="relative rounded-[2rem] md:rounded-[3rem] p-2 bg-white/5 border border-white/10 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-transform duration-700 hover:scale-[1.02]">
+                <img src="img/8.png" alt="Advent GTS Front" class="w-full h-auto rounded-[1.75rem] md:rounded-[2.75rem] object-cover" onerror="this.src='https://via.placeholder.com/1200x800/222/fff?text=img/8.png'">
+                
+                <!-- Spec Pills overlay -->
+                <div class="absolute bottom-6 left-6 flex gap-3 flex-wrap">
+                    <div class="bg-black/40 backdrop-blur-xl border border-white/10 px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white shadow-lg">6-Speed Manual</div>
+                    <div class="bg-black/40 backdrop-blur-xl border border-white/10 px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white shadow-lg">Turbocharged</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Bento Grid Gallery -->
+    <section class="max-w-7xl mx-auto px-6 py-24">
+        <div class="text-center mb-16 reveal">
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Design in every detail.</h2>
+            <p class="text-gray-400 text-lg">Aggressive styling. Aerodynamic precision.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px] md:auto-rows-[400px]">
+            
+            <!-- Item 1 (Spans 2 columns) -->
+            <div class="reveal md:col-span-2 relative group overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-lg p-2">
+                <img src="img/1.png" alt="Advent GTS Angle" class="w-full h-full object-cover rounded-[2rem] transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/800x400/222/fff?text=img/1.png'">
+            </div>
+            
+            <!-- Item 2 -->
+            <div class="reveal relative group overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-lg p-2">
+                <img src="img/2.png" alt="Advent GTS Rear" class="w-full h-full object-cover rounded-[2rem] transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x400/222/fff?text=img/2.png'">
+            </div>
+            
+            <!-- Item 3 -->
+            <div class="reveal relative group overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-lg p-2">
+                <img src="img/3.png" alt="Advent GTS Side" class="w-full h-full object-cover rounded-[2rem] transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x400/222/fff?text=img/3.png'">
+            </div>
+
+            <!-- Item 4 (Spans 2 columns) -->
+            <div class="reveal md:col-span-2 relative group overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-lg p-2">
+                <img src="img/4.png" alt="Advent GTS Rear Angle" class="w-full h-full object-cover rounded-[2rem] transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/800x400/222/fff?text=img/4.png'">
+            </div>
+
+            <!-- Row 3 (3 columns) -->
+            <div class="reveal relative group overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-lg p-2">
+                <img src="img/5.png" alt="Advent GTS Details" class="w-full h-full object-cover rounded-[2rem] transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x400/222/fff?text=img/5.png'">
+            </div>
+            <div class="reveal relative group overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-lg p-2">
+                <img src="img/6.png" alt="Advent GTS Details" class="w-full h-full object-cover rounded-[2rem] transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x400/222/fff?text=img/6.png'">
+            </div>
+            <div class="reveal relative group overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-lg p-2">
+                <img src="img/7.png" alt="Advent GTS Details" class="w-full h-full object-cover rounded-[2rem] transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x400/222/fff?text=img/7.png'">
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-32 px-6 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-blue-900/20 to-transparent z-0"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10 reveal">
+            <h2 class="text-4xl md:text-6xl font-bold tracking-tighter mb-6">Built for the enthusiast.</h2>
+            <p class="text-xl text-gray-400 mb-12">Discover the roots. Check out the foundation of the GTS.</p>
+            
+            <a href="..\Ecobeast\index.html" class="inline-block bg-white text-black font-semibold text-lg px-10 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+                View Ecobeast Variant
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black/80 backdrop-blur-xl py-12 px-6 text-center reveal">
+        <p class="text-gray-500 text-sm">
+            &copy; 2026 Advent by Leopard Motors.<br>
+        </p>
+    </footer>
+
+    <!-- Image Preview Modal -->
+    <div id="imageModal" class="fixed inset-0 z-[100] hidden bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <button onclick="closeModal()" class="absolute top-6 right-8 text-white text-5xl font-light cursor-pointer hover:text-gray-400 transition-colors z-50">&times;</button>
+        <img id="modalImg" class="max-w-full max-h-[90vh] rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] scale-95 transition-transform duration-300 object-contain" src="" alt="Preview">
+    </div>
+
+    <script>
+        // Intersection Observer for Apple-like smooth reveal on scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100; // how many pixels from bottom to trigger
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
+
+        // Image Preview Modal Logic
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImg");
+        const images = document.querySelectorAll("img");
+
+        images.forEach(img => {
+            img.classList.add("cursor-pointer"); // Make cursor a pointer to show clickability
+            img.addEventListener("click", function() {
+                modal.classList.remove("hidden");
+                // Small delay to allow display block to apply before transitioning opacity
+                setTimeout(() => {
+                    modal.classList.remove("opacity-0");
+                    modalImg.classList.remove("scale-95");
+                    modalImg.classList.add("scale-100");
+                }, 10);
+                modalImg.src = this.src;
+            });
+        });
+
+        function closeModal() {
+            modal.classList.add("opacity-0");
+            modalImg.classList.remove("scale-100");
+            modalImg.classList.add("scale-95");
+            setTimeout(() => {
+                modal.classList.add("hidden");
+            }, 300); // Matches the Tailwind duration-300 class
+        }
+
+        // Close the modal when clicking outside the image
+        modal.addEventListener("click", function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
