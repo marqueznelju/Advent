@@ -5,96 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leopard Motors</title>
     <style>
-        :root { 
-            --bg-transition: opacity 2s ease-in-out; 
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+        :root {
+            --glass-card: rgba(255, 255, 255, 0.07);
+            --glass-card-hover: rgba(255, 255, 255, 0.13);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.12);
+            --glass-border-hover: 1px solid rgba(255, 255, 255, 0.22);
+            --blur-heavy: blur(48px);
+            --blur-medium: blur(28px);
+            --blur-light: blur(16px);
+            --radius-card: 28px;
+            --radius-btn: 22px;
+            --radius-pill: 100px;
+            --radius-sm: 14px;
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --text-tertiary: rgba(255, 255, 255, 0.35);
+            --shadow-card: 0 24px 64px rgba(0, 0, 0, 0.55), 0 2px 12px rgba(0, 0, 0, 0.3);
+            --shadow-btn: 0 8px 24px rgba(0, 0, 0, 0.35);
+            --bg-transition: opacity 2.2s ease-in-out;
         }
-        
-        body, html { 
-            margin: 0; 
-            padding: 0; 
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
             min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
-            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", sans-serif;
+            color: var(--text-primary);
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            box-sizing: border-box;
+            justify-content: center;
             overflow-x: hidden;
         }
 
-        /* Background Slider */
-        #bg-container { 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            z-index: -2; 
-            background: black; 
-        }
-        
-        .bg-slide { 
-            position: absolute; 
-            width: 100%; height: 100%; 
-            background-size: cover; 
-            background-position: center; 
-            filter: blur(50px) brightness(40%); 
-            opacity: 0; 
-            transition: var(--bg-transition); 
-            transform: scale(1.15); 
-        }
-        
-        .bg-slide.active { 
-            opacity: 1; 
+        /* ─── Background ─── */
+        #bg-container {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: #7e7e7e;
         }
 
-        /* Loading Screen */
+        /* Extra dark overlay for depth */
+        #bg-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.38);
+            z-index: 1;
+        }
+
+        .bg-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            filter: blur(52px) brightness(50%) saturate(120%);
+            opacity: 0;
+            transition: var(--bg-transition);
+            transform: scale(1);
+            will-change: opacity;
+        }
+
+        .bg-slide.active { opacity: 1; }
+
+        /* ─── Loader ─── */
         #loader-overlay {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: var(--blur-medium);
+            -webkit-backdrop-filter: var(--blur-medium);
             z-index: 9999;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            gap: 16px;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
 
-        #loader-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
+        #loader-overlay.active { opacity: 1; pointer-events: all; }
 
         .spinner {
-            width: 40px; height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            border-top-color: #fff;
+            width: 36px; height: 36px;
+            border: 2.5px solid rgba(255, 255, 255, 0.15);
+            border-top-color: rgba(255, 255, 255, 0.85);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.9s linear infinite;
         }
 
-        @keyframes spin { 
-            100% { transform: rotate(360deg); } 
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Apple Notification Banner Style */
+        /* ─── Notification Banner ─── */
         #popup-overlay {
             position: fixed;
-            top: 20px; 
-            right: 20px;
+            top: 18px;
+            right: 18px;
             z-index: 10000;
             opacity: 0;
-            transform: translateY(-30px) scale(0.95);
+            transform: translateY(-24px) scale(0.96);
             pointer-events: none;
-            transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+            max-width: 360px;
+            width: calc(100vw - 36px);
         }
 
         #popup-overlay.show {
@@ -104,317 +122,413 @@
         }
 
         .apple-alert {
-            background: rgba(30, 30, 30, 0.65);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 18px;
-            width: 340px;
-            padding: 14px 16px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-            box-sizing: border-box;
-            position: relative;
+            background: rgba(28, 28, 32, 0.72);
+            backdrop-filter: blur(52px) saturate(160%);
+            -webkit-backdrop-filter: blur(52px) saturate(160%);
+            border: 0.5px solid rgba(255, 255, 255, 0.14);
+            border-radius: 20px;
+            padding: 14px 16px 14px 14px;
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         .alert-header {
             display: flex;
             align-items: center;
-            margin-bottom: 6px;
+            gap: 10px;
+            margin-bottom: 5px;
         }
 
         .alert-icon {
-            width: 18px;
-            height: 18px;
-            background: linear-gradient(135deg, #ff9500, #ff5e3a);
-            border-radius: 4px;
-            margin-right: 8px;
+            width: 28px; height: 28px;
+            background: linear-gradient(145deg, #ff9f0a, #ff453a);
+            border-radius: 7px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .alert-icon svg {
+            width: 15px; height: 15px;
+            fill: none;
+            stroke: rgba(255,255,255,0.9);
+            stroke-width: 2;
+            stroke-linecap: round;
         }
 
         .alert-title {
             font-size: 13px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            letter-spacing: -0.1px;
-            margin: 0;
-            flex-grow: 1;
+            letter-spacing: -0.15px;
+            color: var(--text-primary);
+            flex: 1;
         }
 
         .close-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.08);
             border: none;
+            color: var(--text-secondary);
+            width: 20px; height: 20px;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
             font-size: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: background 0.2s, color 0.2s;
+            flex-shrink: 0;
         }
 
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-        }
+        .close-btn:hover { background: rgba(255,255,255,0.16); color: #fff; }
 
         .alert-message {
-            font-size: 13px;
-            font-weight: 400;
-            line-height: 16px;
-            margin: 0;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 12.5px;
+            line-height: 1.45;
+            color: var(--text-secondary);
+            padding-left: 38px;
             letter-spacing: -0.1px;
-            padding-left: 26px;
         }
 
-        /* Main UI Card */
-        .card {
-            background: var(--glass-bg); 
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            padding: 40px 30px; 
-            border-radius: 32px; 
-            border: var(--glass-border);
-            text-align: center; 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            width: 90%;
-            max-width: 540px;
-            margin: 40px auto 20px auto;
-            box-sizing: border-box;
-            z-index: 1;
-        }
-
-        h1 { 
-            margin-top: 0;
-            margin-bottom: 10px; 
-            font-size: 2.2rem;
-            font-weight: 600; 
-            letter-spacing: -1px; 
-        }
-
-        .card p {
-            margin-bottom: 30px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Vehicle Buttons */
-        .btn-container { 
-            display: flex; 
-            flex-direction: row;
-            gap: 20px; 
-            justify-content: center;
-        }
-
-        .variant-btn {
-            background: rgba(68, 68, 68, 0.219); 
-            padding: 20px; 
-            border-radius: 24px;
-            cursor: pointer; 
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s;
-            border: var(--glass-border); 
-            flex: 1;
-            max-width: 220px;
+        /* ─── Main Layout ─── */
+        .page-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            box-sizing: border-box;
+            gap: 14px;
+            padding: 24px 16px;
+            width: 100%;
+            max-width: 580px;
+            z-index: 1;
+            background-color: transparent;
         }
 
-        .variant-btn:hover { 
-            background: rgba(255, 255, 255, 0.15); 
-            transform: scale(1.04); 
+        /* ─── Card ─── */
+        .card {
+            width: 100%;
+            background: var(--glass-card);
+            backdrop-filter: var(--blur-heavy) saturate(160%);
+            -webkit-backdrop-filter: var(--blur-heavy) saturate(160%);
+            border: var(--glass-border);
+            border-radius: var(--radius-card);
+            padding: 40px 32px 36px;
+            box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255,255,255,0.07);
+            text-align: center;
         }
 
-        .variant-btn img { 
-            width: 100%; 
-            height: auto; 
-            max-height: 120px; 
-            object-fit: contain;  
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        /* subtle inner top highlight */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 16px; right: 16px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            border-radius: 50%;
+        }
+
+        .card { position: relative; }
+
+        .brand-eyebrow {
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: clamp(1.9rem, 5vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1.08;
+            margin-bottom: 8px;
+            background: linear-gradient(160deg, #fff 60%, rgba(255,255,255,0.55));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: -0.2px;
+            margin-bottom: 32px;
+        }
+
+        /* ─── Vehicle Buttons ─── */
+        .btn-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .variant-btn {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: var(--glass-border);
+            border-radius: var(--radius-btn);
+            padding: 22px 18px 18px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            transition:
+                background 0.3s ease,
+                border-color 0.3s ease,
+                transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .variant-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(160deg, rgba(255,255,255,0.07) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .variant-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.22);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+        }
+
+        .variant-btn:active {
+            transform: scale(0.97);
+            transition-duration: 0.1s;
+        }
+
+        .variant-btn img {
+            width: 100%;
+            height: 110px;
+            object-fit: contain;
+            border-radius: 10px;
+            filter: drop-shadow(0 8px 20px rgba(0,0,0,0.45));
+            transition: transform 0.3s ease;
+        }
+
+        .variant-btn:hover img {
+            transform: scale(1.04) translateY(-2px);
+        }
+
+        .variant-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
         }
 
         .variant-title {
-            font-size: 1.1rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: var(--text-primary);
         }
 
-        /* Footer Notification Links */
-        .footer-notice {
-            display: block;
-            text-decoration: none;
-            margin-bottom: 15px; 
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: var(--glass-border);
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-size: 0.9rem;
+        .variant-sub {
+            font-size: 11.5px;
+            color: var(--text-tertiary);
             font-weight: 400;
-            letter-spacing: 0.5px;
-            color: rgb(255, 255, 255);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            text-align: center;
-            z-index: 1;
-            width: 90%;
-            max-width: 400px;
-            box-sizing: border-box;
-            transition: background 0.3s, transform 0.2s;
+            letter-spacing: 0.2px;
+        }
+
+        /* ─── Footer Links ─── */
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .footer-notice {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: var(--glass-border);
+            border-radius: var(--radius-pill);
+            padding: 12px 22px;
+            font-size: 13.5px;
+            font-weight: 500;
+            letter-spacing: -0.2px;
+            color: rgba(255, 255, 255, 0.75);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 420px;
+            transition: background 0.3s, border-color 0.3s, transform 0.25s ease, color 0.2s;
+        }
+
+        .footer-notice svg {
+            width: 14px; height: 14px;
+            opacity: 0.5;
+            flex-shrink: 0;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: opacity 0.2s;
         }
 
         .footer-notice:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.13);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.95);
             transform: translateY(-2px);
         }
 
-        /* Tablet Responsive Breakpoint */
-        @media (max-width: 768px) {
-            .card {
-                padding: 35px 25px;
+        .footer-notice:hover svg { opacity: 0.8; }
+
+        .footer-notice:active { transform: scale(0.98); }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 600px) {
+            body, html { justify-content: flex-start; }
+
+            .page-wrapper {
+                padding: 88px 14px 32px;
+                gap: 12px;
             }
-            h1 {
-                font-size: 2rem;
+
+            .card { padding: 30px 20px 26px; }
+
+            #popup-overlay {
+                top: 14px;
+                left: 14px;
+                right: 14px;
+                max-width: none;
+                width: auto;
             }
         }
 
-        /* Mobile Responsive Breakpoint */
-        @media (max-width: 500px) {
-            body, html {
-                overflow-y: auto; 
-                justify-content: flex-start;
-                padding: 20px 0;
-            }
-            #popup-overlay {
-                top: 15px;
-                left: 15px;
-                right: 15px;
-                transform: translateY(-40px) scale(0.95);
-            }
-            .apple-alert {
-                width: 100%;
-            }
-            .card {
-                padding: 30px 20px;
-                margin: 80px auto 20px auto; /* More margin on top so notifications don't overlap layout */
-            }
-            h1 {
-                font-size: 1.8rem;
-            }
+        @media (max-width: 420px) {
             .btn-container {
-                flex-direction: column; 
-                align-items: center;
-                gap: 15px;
+                grid-template-columns: 1fr;
+                gap: 12px;
             }
+
             .variant-btn {
-                width: 100%;
-                max-width: 100%;
-                flex-direction: row; 
-                padding: 15px 20px;
-                gap: 20px;
-                justify-content: flex-start;
+                flex-direction: row;
+                padding: 14px 18px;
+                gap: 18px;
+                border-radius: 18px;
             }
+
             .variant-btn img {
-                width: 70px;
-                height: 50px;
-                max-height: 50px;
-                object-fit: contain;
+                width: 72px;
+                height: 52px;
+                flex-shrink: 0;
             }
-            .variant-title {
-                font-size: 1.1rem;
-            }
-            .footer-notice {
-                font-size: 0.85rem;
-                padding: 12px 15px;
-            }
+
+            .variant-label { align-items: flex-start; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Loader -->
     <div id="loader-overlay">
         <div class="spinner"></div>
     </div>
 
-    <!-- Apple Push Notification Banner -->
+    <!-- Notification Banner -->
     <div id="popup-overlay">
         <div class="apple-alert">
             <div class="alert-header">
-                <div class="alert-icon"></div>
-                <h2 class="alert-title">Showcase Notice</h2>
-                <button class="close-btn" onclick="closeNotice()">✕</button>
+                <div class="alert-icon">
+                    <svg viewBox="0 0 15 15"><path d="M7.5 2v5.5M7.5 11v.5"/></svg>
+                </div>
+                <span class="alert-title">Showcase Notice</span>
+                <button class="close-btn" onclick="closeNotice()" aria-label="Close">✕</button>
             </div>
-            <p class="alert-message">This website serves strictly as a project showcase for the Automation game. It is not an official commercial platform.</p>
+            <p class="alert-message">This website is a project showcase for the Automation game — not an official commercial platform.</p>
         </div>
     </div>
 
+    <!-- Background Slider -->
     <div id="bg-container">
         <div class="bg-slide active" style="background-image: url('img/2.png');"></div>
         <div class="bg-slide" style="background-image: url('img/3.png');"></div>
         <div class="bg-slide" style="background-image: url('img/8.png');"></div>
     </div>
 
-    <div class="card">
-        <h1>Leopard Motors</h1>
-        <p>Choose your vehicle</p>
-        <div class="btn-container">
-            <div class="variant-btn" onclick="navigateWithLoader('GTS/index.html')">
-                <img src="img/gts.png" alt="GTS">
-                <span class="variant-title">GTS</span>
+    <!-- Main Content -->
+    <div class="page-wrapper">
+        <div class="card">
+            <p class="brand-eyebrow">Select Your Vehicle</p>
+            <h1>Leopard Motors</h1>
+            <p class="card-subtitle">Choose a model to explore</p>
+
+            <div class="btn-container">
+                <div class="variant-btn" onclick="navigateWithLoader('GTS/index.html')">
+                    <img src="img/gts.png" alt="GTS">
+                    <div class="variant-label">
+                        <span class="variant-title">GTS</span>
+                        <span class="variant-sub">Sport</span>
+                    </div>
+                </div>
+
+                <div class="variant-btn" onclick="navigateWithLoader('Ecobeast/index.html')">
+                    <img src="img/eco.png" alt="Ecobeast">
+                    <div class="variant-label">
+                        <span class="variant-title">Ecobeast</span>
+                        <span class="variant-sub">Efficient</span>
+                    </div>
+                </div>
             </div>
-            
-            <div class="variant-btn" onclick="navigateWithLoader('Ecobeast/index.html')">
-                <img src="img/eco.png" alt="Ecobeast">
-                <span class="variant-title">Ecobeast</span>
-            </div>
+        </div>
+
+        <div class="footer-links">
+            <a class="footer-notice" href="https://store.steampowered.com/app/293760/Automation__The_Car_Company_Tycoon_Game/" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>
+                Download Automation on Steam
+            </a>
+            <a class="footer-notice" href="https://docs.google.com/forms/d/e/1FAIpQLSft4gtBUl8l10hM1h9PtrTVIA1t-3PjyGEAuU3cN5UBlWb4DQ/viewform?usp=header" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Send Suggestions
+            </a>
         </div>
     </div>
 
-    <a class="footer-notice" href="https://store.steampowered.com/app/293760/Automation__The_Car_Company_Tycoon_Game/">
-        Download Automation on Steam!
-    </a>
-    <a class="footer-notice" href="https://docs.google.com/forms/d/e/1FAIpQLSft4gtBUl8l10hM1h9PtrTVIA1t-3PjyGEAuU3cN5UBlWb4DQ/viewform?usp=header">
-        Send suggestions!
-    </a>
-    
-
     <script>
-        // Background Slider Logic
+        // Background Slider
         const slides = document.querySelectorAll('.bg-slide');
         let current = 0;
-        setInterval(() => {
-            if(slides.length === 0) return;
-            slides[current].classList.remove('active');
-            current = (current + 1) % slides.length;
-            slides[current].classList.add('active');
-        }, 2000); 
-
-        // Apple UI Style Navigation Loader
-        function navigateWithLoader(url) {
-            const loader = document.getElementById('loader-overlay');
-            loader.classList.add('active');
-            
-            setTimeout(() => {
-                window.location.href = url;
-            }, 1000);
+        if (slides.length > 1) {
+            setInterval(() => {
+                slides[current].classList.remove('active');
+                current = (current + 1) % slides.length;
+                slides[current].classList.add('active');
+            }, 4000);
         }
 
-        // Showcase Pop-up Session Logic
+        // Navigation with Loader
+        function navigateWithLoader(url) {
+            document.getElementById('loader-overlay').classList.add('active');
+            setTimeout(() => { window.location.href = url; }, 900);
+        }
+
+        // Notification Logic
         window.addEventListener('DOMContentLoaded', () => {
             if (!sessionStorage.getItem('showcaseNoticeDismissed')) {
                 setTimeout(() => {
                     const popup = document.getElementById('popup-overlay');
-                    if(popup) popup.classList.add('show');
-                }, 600);
-
-                setTimeout(() => {
-                    closeNotice();
-                }, 7600);
+                    if (popup) popup.classList.add('show');
+                }, 700);
+                setTimeout(closeNotice, 7700);
             }
         });
 
